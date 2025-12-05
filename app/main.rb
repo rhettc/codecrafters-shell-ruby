@@ -1,4 +1,3 @@
-
 SIGNALS = %w[:term]
 
 def load_dependencies
@@ -8,8 +7,11 @@ def load_dependencies
 end
 
 def require_all_commands
-  Dir.glob(File.join(File.dirname(__FILE__), 'commands', '*_command.rb')).each do |file|
-    require_relative file
+  command_dir = File.join(File.dirname(__FILE__), 'commands')
+  command_files = Dir.glob(File.join(command_dir, '*_command.rb'))
+
+  command_files.each do |file|
+    require File.expand_path(file)
   end
 end
 
