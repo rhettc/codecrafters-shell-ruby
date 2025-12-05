@@ -1,8 +1,17 @@
-require_relative 'command_resolver'
-
-require_relative 'errors/unrecognized_command_error'
 
 SIGNALS = %w[:term]
+
+def load_dependencies
+  require_relative 'command_resolver'
+  require_relative 'errors/unrecognized_command_error'
+  require_all_commands
+end
+
+def require_all_commands
+  Dir.glob(File.join(File.dirname(__FILE__), 'commands', '*_command.rb')).each do |file|
+    require file
+  end
+end
 
 def read
   $stdout.print("$ ")
@@ -12,8 +21,8 @@ end
 
 def evaluate(input)
   return if input.nil?
-  command, args = input.split
-
+  command, args = input.split(' ', 2)
+  args = args.split(' ') unless args.nil?
   begin
     resolved_command = CommandResolver.new(command).resolve
 
@@ -39,4 +48,5 @@ def repl
   end until exit_shell
 end
 
+load_dependencies
 repl

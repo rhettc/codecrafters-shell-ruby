@@ -1,16 +1,13 @@
 # frozen_string_literal: true
 
-require_relative 'errors/unrecognized_command_error'
-require_relative 'commands/basic_command'
-require_relative 'commands/builtin_command'
-require_relative 'commands/exit_command'
-
 class CommandResolver
 
-  BUILTIN_COMMANDS = %w[exit]
+  BUILTIN_COMMANDS = %w[exit echo]
   BUILTIN_LOOKUP = {
-    exit: :ExitCommand
+    exit: :ExitCommand,
+    echo: :EchoCommand
   }
+
   def initialize(input)
     @input = input
   end
