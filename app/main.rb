@@ -9,7 +9,7 @@ end
 
 def require_all_commands
   Dir.glob(File.join(File.dirname(__FILE__), 'commands', '*_command.rb')).each do |file|
-    require file
+    require_relative file
   end
 end
 
