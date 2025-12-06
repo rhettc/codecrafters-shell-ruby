@@ -10,3 +10,8 @@ REPLs, builtin commands, and more.
 
 **Note**: If you're viewing this repo on GitHub, head over to
 [codecrafters.io](https://codecrafters.io) to try the challenge.
+
+## Adding a new command
+1. Build your command class inheriting from basic, builtin, etc
+2. Ensure new class located in the commands directory
+3. For built-ins, update the BUILTIN_LOOKUP and BUILTIN_COMMAND
