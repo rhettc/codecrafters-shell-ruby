@@ -2,10 +2,12 @@
 
 class CommandResolver
 
-  BUILTIN_COMMANDS = %w[exit echo]
+  BUILTIN_COMMANDS = %w[exit echo type]
   BUILTIN_LOOKUP = {
     exit: :ExitCommand,
-    echo: :EchoCommand
+    echo: :EchoCommand,
+    type: :TypeCommand
+
   }
 
   def initialize(input)

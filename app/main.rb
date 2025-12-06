@@ -30,8 +30,8 @@ def evaluate(input)
 
     resolved_command.execute(args)
 
-  rescue UnrecognizedCommandError
-    $stderr.puts "#{command}: not found"
+  rescue UnrecognizedCommandError => e
+    $stderr.puts e.message
     return nil
   end
 end

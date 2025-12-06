@@ -5,6 +5,9 @@ class UnrecognizedCommandError < StandardError
     @command = command
     super
   end
+  def message
+    "#{@command}: not found"
+  end
 end
 
 
