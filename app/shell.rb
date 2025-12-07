@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-
+require 'fileutils'
+require_relative 'input'
 class Shell
   SIGNALS = %w[:term]
   def read
@@ -8,13 +9,10 @@ class Shell
   end
 
   def evaluate(input)
-    return if input.nil?
-    command, args = input.split(' ', 2)
-    args = args.split(' ') unless args.nil?
     begin
-      resolved_command = CommandResolver.new(command).resolve
-
-      resolved_command.execute(args)
+      command = CommandResolver.new(input.command_name).resolve
+      puts "executing #{command.name} with args #{input.args} "
+      command.execute(input.args)
 
     rescue UnrecognizedCommandError => e
       $stderr.puts e.message
@@ -22,18 +20,32 @@ class Shell
     end
   end
 
-
   def repl
     begin
-      input = read
+      input = Input.new(read)
       next if input.empty?
 
       output, signal = evaluate(input)
       next if output.nil?
 
-      print "#{output}" if signal.nil?
+      if input.output_to_stdout?
+        puts "output is #{output}"
+        print "#{output}" if signal.nil?
+      else
+        puts "output is #{output}"
+        write_to_file(output, input.output_file)
+      end
 
       exit_shell = signal == :exit
     end until exit_shell
+  end
+
+  private
+
+  def write_to_file(output, target)
+    puts "writing #{output} to #{target}"
+    dir = File.dirname(target)
+    FileUtils.mkdir_p(dir) unless File.directory?(dir)
+    File.open(target, 'a') { |f| f.print output }
   end
 end
