@@ -17,7 +17,6 @@ end
 
 def read
   $stdout.print("$ ")
-  #$stdout.flush
   gets.chomp
 end
 
@@ -44,7 +43,7 @@ def repl
     output, signal = evaluate(input)
     next if output.nil?
 
-    print "#{output}\n" if signal.nil?
+    print "#{output}" if signal.nil?
 
     exit_shell = signal == :exit
   end until exit_shell
