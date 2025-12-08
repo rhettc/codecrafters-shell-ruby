@@ -6,7 +6,6 @@ class TypeCommand < BuiltinCommand
     command = resolve(command_name)
     is_builtin = command.is_a?(BuiltinCommand)
     if is_builtin
-      # should commands have a name and we query that instead of using the args?
       $stdout.puts "#{command.name} is a shell builtin"
     elsif command.is_a?(ExecutableCommand)
       $stdout.puts "#{command.name} is #{command.full_path}"
