@@ -35,6 +35,7 @@ class Shell
   end
 
   def print(output, output_redirection, error_redirection)
+    # TODO rework when error redirection is suported
     if output_redirection || error_redirection
       write_to_file(output.value, output_redirection.target)
       Kernel.print "#{output.error}" unless output.error.nil?
