@@ -4,7 +4,6 @@ require_relative 'input'
 require_relative 'output'
 
 class Shell
-  SIGNALS = %w[:term]
 
   def repl
     begin
