@@ -1,22 +1,18 @@
 # frozen_string_literal: true
-
+require_relative 'redirection'
 class Input
-  attr_reader :command_name, :args, :output_file
+  attr_reader :command_name, :args, :output_redirection, :error_redirection
 
   def initialize(raw_input)
     @raw_input = raw_input
 
     unless @raw_input.empty?
-      @command_name, @args = @raw_input.split(' ', 2)
-      if @args.nil?
+      @command_name, args = @raw_input.split(' ', 2)
+      if args.nil?
         @args = []
       else
-        puts "partitioning args #{@args.partition(/\d?>/)}"
-        @args, _, redirection_target = @args.partition(/\d?>/) # redirecting stdout ONLY for now
-
-        @output_file = redirection_target.strip unless redirection_target.empty?
+        parse_args(args)
       end
-
     end
 
   end
@@ -29,5 +25,21 @@ class Input
     @output_file.nil?
   end
 
+  def any_redirection?
+    puts "any redirection? #{@output_redirection || @error_redirection}" if ENV['DEBUG']
+    @output_redirection || @error_redirection
+  end
 
+  private
+  def parse_args(args)
+    puts "partitioning args #{args.partition(/\d?>/)}" if ENV['DEBUG']
+    @args, _, redirection_target = args.partition(/\d?>/)
+                                        .map(&:strip)
+
+    @args = @args.split(' ')
+    unless redirection_target.empty?
+      @output_redirection = Redirection.new(:stdout, redirection_target)
+    end
+
+  end
 end
