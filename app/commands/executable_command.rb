@@ -14,6 +14,6 @@ class ExecutableCommand < BasicCommand
   def execute(args = [])
     # debt: Serializing out/err to a string is not memory efficient in situations with large out/err
     stdout, stderr, status = Open3.capture3(name, *args)
-    stdout
+    return Output.new(stdout, nil, stderr)
    end
 end

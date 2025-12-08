@@ -4,6 +4,6 @@ class ExitCommand < BuiltinCommand
   def execute(args)
     args ||= [0]
     exit_code = args.first&.to_i || 0
-    [exit_code, :exit]
+    Output.new(nil, :exit, nil, exit_code)
   end
 end
